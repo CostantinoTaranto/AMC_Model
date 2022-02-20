@@ -1,4 +1,4 @@
-%% AMC Example (ex4)
+%% AMC Example
 %In this exercise I try to apply AMC on a small block e and see on screen
 %what happens
 
@@ -8,8 +8,15 @@ clear
 %Add the YUV scripts folder to the MATLAB path
 addpath '.\YUV'
 
+%Acquire example name from input 
+prompt = {'Enter example file path:'};
+dlgtitle = 'Example file';
+dims = [5 100];
+definput = {'.\AMC_4par_examples\AMC_4par_ex3.xlsx'};
+examplefile = inputdlg(prompt,dlgtitle,dims,definput);
+
 %Load example data
-data=readtable('.\AMC_4par_examples\AMC_4par_ex6.xlsx');
+data=readtable(char(examplefile));
 
 %fame parameters
 frame_h=data.frame_h(1);
