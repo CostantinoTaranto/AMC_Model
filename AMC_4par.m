@@ -1,6 +1,6 @@
-%% AMC Example
-%In this exercise I try to apply AMC on a small block e and see on screen
-%what happens
+%% AMC for canditates choice multiparameter model
+%This model chooses between the different candidates the one whose SAD is
+%lower than the others
 
 close all
 clear
@@ -12,7 +12,7 @@ addpath '.\YUV'
 prompt = {'Enter example file path:'};
 dlgtitle = 'Example file';
 dims = [5 100];
-definput = {'.\AMC_4par_examples\AMC_4par_ex3.xlsx'};
+definput = {'.\AMC_examples_data\AMC_examples_data_ex3.xlsx'};
 examplefile = inputdlg(prompt,dlgtitle,dims,definput);
 
 %Load example data
@@ -21,6 +21,7 @@ data=readtable(char(examplefile));
 %fame parameters
 frame_h=data.frame_h(1);
 frame_w=data.frame_w(1);
+sixPar=data.sixPar(1);
 
 %Block parameters
 w=data.w(1);
@@ -92,6 +93,8 @@ mv0_v=zeros(cand_num,1);
 mv0_h=zeros(cand_num,1);
 mv1_v=zeros(cand_num,1);
 mv1_h=zeros(cand_num,1);
+mv2_v=zeros(cand_num,1);
+mv2_h=zeros(cand_num,1);
 for i=1:cand_num
     Refframe_AMC(:,:,i)=Refframe;	%Affine compensated reference frame
 	%CPMV 4-parameter 
@@ -99,6 +102,11 @@ for i=1:cand_num
 	mv0_h(i)=data.mv0_h(i);
 	mv1_v(i)=data.mv1_v(i);
 	mv1_h(i)=data.mv1_h(i);
+    %If CMPV 6-parameter, add MV2 too
+    if sixPar==1
+	    mv2_v(i)=data.mv2_v(i);
+	    mv2_h(i)=data.mv2_h(i);
+    end 
 end
 
 
@@ -108,9 +116,11 @@ rep_num=4;
 block_num=(w*h)/256; %(Total n of pixels)/(pixels in a 16x16 block)
 %SAD(n) contains the SAD for the n-th candidate
 SAD=zeros(cand_num,1);
-%N-th 4x4 block in a 16x16 representative, mv's matrix
-%First index: 16x16 block identifier (da 1 a 4)
-%Second index: First coordinate: y [v], second coordinate: x [h]
+%Relative mv's (mvr) matrix
+%First index: Candidate identifier (da 1 a cand_num)
+%Second index: Representative identifier (da 1 a rep_num, typ: rep_num=4)
+%Third index: 16x16 block identifier (da 1 a block_num)
+%Fourth index: First coordinate: y [v], second coordinate: x [h]
 mvr=zeros(cand_num,rep_num,block_num,2);
 %Exact values
 mvr_ex=mvr;
@@ -133,8 +143,17 @@ for curcand=1:cand_num
                 end
                 x=16*(i-1)+offset_x;
                 y=16*(j-1)+offset_y;
-                mvr_ex(curcand,currep,curbloc,1)=x*(mv1_v(curcand)-mv0_v(curcand))/w + y*(mv1_h(curcand)-mv0_h(curcand))/w + mv0_v(curcand); %mv_v exact
-                mvr_ex(curcand,currep,curbloc,2)=x*(mv1_h(curcand)-mv0_h(curcand))/w - y*(mv1_v(curcand)-mv0_v(curcand))/w + mv0_h(curcand); %mv_h exact
+                a_1=(mv1_v(curcand)-mv0_v(curcand))/w; %a_v
+                a_2=(mv1_h(curcand)-mv0_h(curcand))/w; %a_h
+                if sixPar==0
+                    b_1=+(mv1_h(curcand)-mv0_h(curcand))/w; %b_v
+                    b_2=-(mv1_v(curcand)-mv0_v(curcand))/w; %b_h
+                else
+                    b_1=+(mv2_v(curcand)-mv0_v(curcand))/h; %b_v
+                    b_2=+(mv2_h(curcand)-mv0_h(curcand))/h; %b_h
+                end
+                mvr_ex(curcand,currep,curbloc,1)=x*a_1 + y*b_1 + mv0_v(curcand); %mv_v exact
+                mvr_ex(curcand,currep,curbloc,2)=x*a_2 + y*b_2 + mv0_h(curcand); %mv_h exact
                 mvr(curcand,currep,curbloc,1)=round(mvr_ex(curcand,currep,curbloc,1)/16); %mv_v
                 mvr(curcand,currep,curbloc,2)=round(mvr_ex(curcand,currep,curbloc,2)/16); %mv_h
                 SAD(curcand)=SAD(curcand)+ sum( abs(Refframe((y0+1+y+mvr(curcand,currep,curbloc,1)):(y0+1+y+mvr(curcand,currep,curbloc,1)+3),(x0+1+x+mvr(curcand,currep,curbloc,2)):(x0+1+x+mvr(curcand,currep,curbloc,2)+3)) - CurCu(y+1:(y+4),x+1:(x+4))),'all');
