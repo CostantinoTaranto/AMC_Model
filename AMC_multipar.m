@@ -160,8 +160,6 @@ for curcand=1:cand_num
                 %Copy the original position of each block (graphical
                 %reference)
                 Refframe_AMC((y0+1+y):(y0+1+y+3),(x0+1+x):(x0+1+x+3),curcand)=CurCu(y+1:(y+4),x+1:(x+4));
-                %Copy the translated blocks (graphical reference)
-                Refframe_AMC((y0+1+y+mvr(curcand,currep,curbloc,1)):(y0+1+y+mvr(curcand,currep,curbloc,1)+3),(x0+1+x+mvr(curcand,currep,curbloc,2)):(x0+1+x+mvr(curcand,currep,curbloc,2)+3),curcand)=CurCu(y+1:(y+4),x+1:(x+4));
             end
         end
     end
