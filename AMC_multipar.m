@@ -206,11 +206,24 @@ SAD_max=max(SAD);
 SAD_adv=(1-SAD_min/SAD_max)*100;
 msgbox({'Best Candidate';num2str(Best_candidate);'SAD Advantage';strcat(num2str(SAD_adv,'%.2f'),'%')})
 
-mv0_h_comp=[mv0_h(1) mv0_h(2)];
-mv0_v_comp=[mv0_v(1) mv0_v(2)];
-mv1_h_comp=[mv1_h(1) mv1_h(2)];
-mv1_v_comp=[mv1_v(1) mv1_v(2)];
-mv2_h_comp=[mv2_h(1) mv2_h(2)];
-mv2_v_comp=[mv2_v(1) mv2_v(2)];
+%Check if the VQ_best is different from the Matlab chosen one. If yes,
+%perform the comparison
+if isfield(table2struct(data),'VQ_best')
+    VQ_best=data.VQ_best(1);
+    if VQ_best~=Best_candidate
 
-[coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp);
+        comp_offs_y(1)=data.comp_offs_y(Best_candidate);
+        comp_offs_x(1)=data.comp_offs_x(Best_candidate);
+        comp_offs_y(2)=data.comp_offs_y(VQ_best);
+        comp_offs_x(2)=data.comp_offs_x(VQ_best); 
+
+        mv0_h_comp=[mv0_h(Best_candidate) mv0_h(VQ_best)];
+        mv0_v_comp=[mv0_v(Best_candidate) mv0_v(VQ_best)];
+        mv1_h_comp=[mv1_h(Best_candidate) mv1_h(VQ_best)];
+        mv1_v_comp=[mv1_v(Best_candidate) mv1_v(VQ_best)];
+        mv2_h_comp=[mv2_h(Best_candidate) mv2_h(VQ_best)];
+        mv2_v_comp=[mv2_v(Best_candidate) mv2_v(VQ_best)];
+        
+        [coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp, comp_offs_x, comp_offs_y);
+    end
+end 

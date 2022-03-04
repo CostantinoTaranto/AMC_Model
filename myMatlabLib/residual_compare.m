@@ -1,4 +1,4 @@
-function [coeffReq,nonZero] = residual_compare(Refframe,CurCu, sixPar, mv0_h, mv0_v, mv1_h, mv1_v, mv2_h, mv2_v)
+function [coeffReq,nonZero] = residual_compare(Refframe,CurCu, sixPar, mv0_h, mv0_v, mv1_h, mv1_v, mv2_h, mv2_v, comp_offs_x, comp_offs_y)
 
 %mvi_(v,h) sono i CPMV del
 % 1: Miglior candidato secondo il mio algoritmo
@@ -42,9 +42,9 @@ RefCu_1=zeros(CurCu_AMC_1_h,CurCu_AMC_1_w);
 for j=1:(CurCu_AMC_1_h)%Scorri righe
     for i=1:(CurCu_AMC_1_w)%Scorri colonne
         if CurCu_AMC_1(j,i)==0
-            CurCu_AMC_1(j,i)=Refframe(j+89,i+203);
+            CurCu_AMC_1(j,i)=Refframe(j+comp_offs_y(1),i+comp_offs_x(1));
         end
-            RefCu_1(j,i)=Refframe(j+89,i+203);
+            RefCu_1(j,i)=Refframe(j+comp_offs_y(1),i+comp_offs_x(1));
     end
 end
 
@@ -76,9 +76,9 @@ RefCu_2=zeros(CurCu_AMC_2_h,CurCu_AMC_2_w);
 for j=1:(CurCu_AMC_2_h)%Scorri righe
     for i=1:(CurCu_AMC_2_w)%Scorri colonne
         if CurCu_AMC_2(j,i)==0
-            CurCu_AMC_2(j,i)=Refframe(j+88,i+204);
+            CurCu_AMC_2(j,i)=Refframe(j+comp_offs_y(2),i+comp_offs_x(2));
         end
-            RefCu_2(j,i)=Refframe(j+88,i+204);
+            RefCu_2(j,i)=Refframe(j+comp_offs_y(2),i+comp_offs_x(2));
     end
 end
 
