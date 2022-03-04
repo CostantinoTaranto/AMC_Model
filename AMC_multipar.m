@@ -5,14 +5,15 @@
 close all
 clear
 
-%Add the YUV scripts folder to the MATLAB path
+%Add the scripts folder to the MATLAB path
 addpath '.\YUV'
+addpath '.\myMatlabLib'
 
 %Acquire example name from input 
 prompt = {'Enter example file path:'};
 dlgtitle = 'Example file';
 dims = [5 100];
-definput = {'.\AMC_examples_data\AMC_examples_data_ex3.xlsx'};
+definput = {'.\AMC_examples_data\AMC_examples_data_ex9.xlsx'};
 examplefile = inputdlg(prompt,dlgtitle,dims,definput);
 
 %Load example data
@@ -204,3 +205,12 @@ end
 SAD_max=max(SAD);
 SAD_adv=(1-SAD_min/SAD_max)*100;
 msgbox({'Best Candidate';num2str(Best_candidate);'SAD Advantage';strcat(num2str(SAD_adv,'%.2f'),'%')})
+
+mv0_h_comp=[mv0_h(1) mv0_h(2)];
+mv0_v_comp=[mv0_v(1) mv0_v(2)];
+mv1_h_comp=[mv1_h(1) mv1_h(2)];
+mv1_v_comp=[mv1_v(1) mv1_v(2)];
+mv2_h_comp=[mv2_h(1) mv2_h(2)];
+mv2_v_comp=[mv2_v(1) mv2_v(2)];
+
+[coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp);
