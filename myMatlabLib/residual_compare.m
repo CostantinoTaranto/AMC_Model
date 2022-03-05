@@ -1,5 +1,7 @@
 function [coeffReq,nonZero] = residual_compare(Refframe,CurCu, sixPar, mv0_h, mv0_v, mv1_h, mv1_v, mv2_h, mv2_v, comp_offs_x, comp_offs_y)
 
+%% Transformation of the Cu with both the candidates 
+
 %mvi_(v,h) sono i CPMV del
 % 1: Miglior candidato secondo il mio algoritmo
 % 2: Miglior candidato secondo il VTM
@@ -29,10 +31,16 @@ for i=1:2
     end
 end
 
-%% Matlab candidate residual computation
 figure('Name','Transformation with Matlab Candidate')
 colormap('gray')
 image(CurCu_tran_1)
+
+figure('Name','Transformation with VTM Candidate')
+colormap('gray')
+image(CurCu_tran_2)
+
+
+%% Matlab candidate residual computation
 
 %Fill the black squares with the values from the reference frame
 [CurCu_AMC_1_h,CurCu_AMC_1_w]=size(CurCu_tran_1);
@@ -64,9 +72,6 @@ coeffReq(1)=dctCoeffNum(Residual_1,99);
 nonZero(1)=nnz(Residual_1);
 
 %% VTM candidate residual computation
-figure('Name','Transformation with VTM Candidate')
-colormap('gray')
-image(CurCu_tran_2)
 
 %Fill the black squares with the values from the reference frame
 [CurCu_AMC_2_h,CurCu_AMC_2_w]=size(CurCu_tran_2);
@@ -96,4 +101,17 @@ image(Residual_2)
 coeffReq(2)=dctCoeffNum(Residual_2,99);
 nonZero(2)=nnz(Residual_2);
 
-        
+%% CPMV comparison
+%We compute the abs ratio and phase difference between the CPMVs. This
+%gives us an idea of how much the extimated cpmvs are different from the
+%VTM ones
+
+[abs_mv_ratio(1),phase_mv_diff(1)] = mv_compare(mv0_h,mv0_v);
+[abs_mv_ratio(2),phase_mv_diff(2)] = mv_compare(mv1_h,mv1_v);
+if sixPar==1
+    [abs_mv_ratio(3),phase_mv_diff(3)] = mv_compare(mv2_h,mv2_v);
+    table({"Abs Ratio";"Phase Diff"},{abs_mv_ratio(1);phase_mv_diff(1)},{abs_mv_ratio(2);phase_mv_diff(2)},{abs_mv_ratio(3);phase_mv_diff(3)}, 'VariableNames',{'Var','MV0','MV1','MV2'})
+else
+    table({"Abs Ratio";"Phase Diff"},{abs_mv_ratio(1);phase_mv_diff(1)},{abs_mv_ratio(2);phase_mv_diff(2)}, 'VariableNames',{'Var','MV0','MV1'})
+end
+msgbox({'The model and VTM choices are different. Check the Command Window...'})        

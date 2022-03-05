@@ -201,8 +201,8 @@ for curcand=1:cand_num
 end
 
 
-[SAD_min,Best_candidate]=min(SAD);
-SAD_max=max(SAD);
+[SAD_min,Best_candidate]=min(SAD(1:2));
+SAD_max=max(SAD(1:2));
 SAD_adv=(1-SAD_min/SAD_max)*100;
 msgbox({'Best Candidate';num2str(Best_candidate);'SAD Advantage';strcat(num2str(SAD_adv,'%.2f'),'%')})
 
@@ -224,6 +224,6 @@ if isfield(table2struct(data),'VQ_best')
         mv2_h_comp=[mv2_h(Best_candidate) mv2_h(VQ_best)];
         mv2_v_comp=[mv2_v(Best_candidate) mv2_v(VQ_best)];
         
-        [coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp, comp_offs_x, comp_offs_y);
+        [coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp, comp_offs_x, comp_offs_y)
     end
 end 
