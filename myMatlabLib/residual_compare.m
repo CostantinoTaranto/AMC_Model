@@ -1,4 +1,4 @@
-function [coeffReq,nonZero] = residual_compare(Refframe,CurCu, sixPar, mv0_h, mv0_v, mv1_h, mv1_v, mv2_h, mv2_v, comp_offs_x, comp_offs_y)
+function [coeffReq,nonZero,nonZero_gt10] = residual_compare(Refframe,CurCu, sixPar, mv0_h, mv0_v, mv1_h, mv1_v, mv2_h, mv2_v, comp_offs_x, comp_offs_y)
 
 %% Transformation of the Cu with both the candidates 
 
@@ -70,6 +70,7 @@ image(Residual_1)
 coeffReq(1)=dctCoeffNum(Residual_1,99);
 %Number of nonzero elements
 nonZero(1)=nnz(Residual_1);
+nonZero_gt10(1)=nnz(round(Residual_1/10));
 
 %% VTM candidate residual computation
 
@@ -100,6 +101,7 @@ image(Residual_2)
 %Compute what fraction of DCT coefficients contain 99% of the energy in the image
 coeffReq(2)=dctCoeffNum(Residual_2,99);
 nonZero(2)=nnz(Residual_2);
+nonZero_gt10(2)=nnz(round(Residual_2/10));
 
 %% CPMV comparison
 %We compute the abs ratio and phase difference between the CPMVs. This

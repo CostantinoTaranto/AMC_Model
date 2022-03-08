@@ -1,1 +1,13 @@
+** matlab_examples-GLOBAL
+
 NOTA: I comp_off_(x/y) sono scritti in coordinate VQ_Analyzer (ovvero partendo da zero) perchè già il loop parte con i=1 così come anche j=1. Scrivere gli offset in coordinate Matlab (ovvero partendo da zero) significherebbe aggiugnere due volte "1".
+
+** matlab_examples-SUMMARY
+
+-- CONSTRUCTED:
+	-(V/X): La scelta del candidato ha richiesto il calcolo del/dei candidato/i costruiti
+
+-- WHY KO?
+	-Costructed Candidate Mismatch: Il candidato costruito dal Modello Matlab è diverso da quello costruito dal VTM. In questo caso i vari MV ratio aiutano a capire quanto siano diversi i vettori costruiti 
+
+	-Wrong choice (X instead of Y): L'algoritmo ha scelto il candidato di tipo X anzichè scegliere il candidato di tipo Y. (I: Inherited, C: Constructed, T: Translational)

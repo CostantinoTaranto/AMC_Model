@@ -13,7 +13,7 @@ addpath '.\myMatlabLib'
 prompt = {'Enter example file path:'};
 dlgtitle = 'Example file';
 dims = [5 100];
-definput = {'.\AMC_examples_data\AMC_examples_data_ex9.xlsx'};
+definput = {'.\AMC_examples_data\AMC_examples_data_ex11.xlsx'};
 examplefile = inputdlg(prompt,dlgtitle,dims,definput);
 
 %Load example data
@@ -224,6 +224,7 @@ if isfield(table2struct(data),'VQ_best')
         mv2_h_comp=[mv2_h(Best_candidate) mv2_h(VQ_best)];
         mv2_v_comp=[mv2_v(Best_candidate) mv2_v(VQ_best)];
         
-        [coeffReq,nonZero] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp, comp_offs_x, comp_offs_y)
+        [coeffReq,nonZero,nonZero_gt10] = residual_compare(Refframe,CurCu,sixPar,mv0_h_comp, mv0_v_comp,mv1_h_comp, mv1_v_comp,mv2_h_comp, mv2_v_comp, comp_offs_x, comp_offs_y)
+        SAD_Ratio=SAD(Best_candidate)/SAD(VQ_best)
     end
 end 
