@@ -21,6 +21,7 @@ while ThereAreFiles
         datastruct(datastructCurIdx).POC_Cur=curfileTab.startfrm_cur(1);
         datastruct(datastructCurIdx).x0=curfileTab.x0(1);
         datastruct(datastructCurIdx).y0=curfileTab.y0(1);
+        datastruct(datastructCurIdx).Par=4+2*curfileTab.sixPar(1);
         %Estratte le informazioni, aumenta gli indici e passa al prossimo
         %file
         datastructCurIdx=datastructCurIdx+1;
@@ -31,6 +32,5 @@ while ThereAreFiles
 end
 
 fprintf("Scansione terminata, sono stati scansionati %d files.",datastructCurIdx-1);
-datastruct
 datatable=struct2table(datastruct);
 writetable(datatable,"matlab_examples-inventory.xlsx");
