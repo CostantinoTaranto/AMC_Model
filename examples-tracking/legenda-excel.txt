@@ -2,6 +2,8 @@
 
 NOTA: I comp_off_(x/y) sono scritti in coordinate VQ_Analyzer (ovvero partendo da zero) perchè già il loop parte con i=1 così come anche j=1. Scrivere gli offset in coordinate Matlab (ovvero partendo da zero) significherebbe aggiugnere due volte "1".
 
+NOTA: I POC sono scritti SEMPRE in notazione "partendo da zero". Questo perché la libreria "YUV" supporta l'accesso ai frame con indici che partono da zero.
+
 ** matlab_examples-SUMMARY
 
 -- CONSTRUCTED:
