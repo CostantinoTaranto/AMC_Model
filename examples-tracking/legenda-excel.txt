@@ -5,7 +5,7 @@ NOTA: I comp_off_(x/y) sono scritti in coordinate VQ_Analyzer (ovvero partendo d
 ** matlab_examples-SUMMARY
 
 -- CONSTRUCTED:
-	-(V/X): La scelta del candidato ha richiesto il calcolo del/dei candidato/i costruiti
+	-(V/X): La scelta del candidato ha/non ha richiesto il calcolo del/dei candidato/i costruiti
 
 -- WHY KO?
 	-Costructed Candidate Mismatch: Il candidato costruito dal Modello Matlab è diverso da quello costruito dal VTM. In questo caso i vari MV ratio aiutano a capire quanto siano diversi i vettori costruiti 
