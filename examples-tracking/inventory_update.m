@@ -31,6 +31,6 @@ while ThereAreFiles
     end
 end
 
-fprintf("Scansione terminata, sono stati scansionati %d files.",datastructCurIdx-1);
+fprintf("Scansione terminata, sono stati scansionati %d files.\n",datastructCurIdx-1);
 datatable=struct2table(datastruct);
 writetable(datatable,"matlab_examples-inventory.xlsx");
