@@ -4,6 +4,8 @@ NOTA: I comp_off_(x/y) sono scritti in coordinate VQ_Analyzer (ovvero partendo d
 
 NOTA: I POC sono scritti SEMPRE in notazione "partendo da zero". Questo perché la libreria "YUV" supporta l'accesso ai frame con indici che partono da zero.
 
+UA: UnAvailable, vuol dire che i MV di quel blocco non sono disponibili
+
 ** matlab_examples-SUMMARY
 
 -- CONSTRUCTED:
