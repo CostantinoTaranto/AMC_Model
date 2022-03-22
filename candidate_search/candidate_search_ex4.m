@@ -15,28 +15,28 @@ y=h;
 
 % Neighboring blocks motion vectors
 %Group 0
-mv0_h(1)=-56;   %A2 x component
-mv0_v(1)=88;    %A2 y component
+mv0_h(1)=-80;   %A2 x component
+mv0_v(1)=-48;    %A2 y component
 
 mv0_h(2)=-88;   %B2 x component
-mv0_v(2)=128;    %B2 y component
+mv0_v(2)=-64;    %B2 y component
 
-mv0_h(3)=-80;   %B3 x component
-mv0_v(3)=80;    %B3 y component
+mv0_h(3)=-88;   %B3 x component
+mv0_v(3)=-64;    %B3 y component
 
 %Group 1
-mv1_h(1)=-96;   %B1 x component
-mv1_v(1)=48;   %B1 y component
+mv1_h(1)=-88;   %B1 x component
+mv1_v(1)=-64;   %B1 y component
 
-mv1_h(2)=-112;   %B0 x component
-mv1_v(2)=32;    %B0 y component
+mv1_h(2)=-88;   %B0 x component
+mv1_v(2)=-64;    %B0 y component
 
 %Group 2
-mv2_h(1)=16;   %A1 x component
-mv2_v(1)=0;    %A1 y component
+mv2_h(1)=-80;   %A1 x component
+mv2_v(1)=-48;    %A1 y component
 
-mv2_h(2)=0;   %A0 x component
-mv2_v(2)=0;  %A0 y component
+mv2_h(2)=-66;   %A0 x component
+mv2_v(2)=-42;  %A0 y component
 
 D_min=121237;
 D_min2=121238;

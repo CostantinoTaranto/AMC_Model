@@ -41,8 +41,10 @@ mv2_v(2)=9;  %A0 y component
 D_min=121237;
 D_min2=121238;
 
-%C(1) and C(2) contain the first and second best candidates respectively
-C=zeros(2,2);
+%Rows C(1) and C(2) contain the first and second best candidates respectively
+%The third row contains the third vector for which the distortion D is the
+%minimun one
+C=zeros(2,3);
 
 % Best candiadate search
 for i=1:length(mv0_h)
@@ -60,12 +62,20 @@ for i=1:length(mv0_h)
                 D_min=D;
                 C(2,1)=C(1,1);
                 C(2,2)=C(1,2);
+                C(2,3)=C(1,3);
                 C(1,1)=i; 
                 C(1,2)=j;
+                C(1,3)=k;
             elseif D<D_min2
-                D_min2=D;
-                C(2,1)=i; %Second best candidates
-                C(2,2)=j;
+                %Check if this candidate couple is not the same as the best one
+                if mv0_h(i)~=mv0_h(C(1,1)) || mv0_v(i)~=mv0_v(C(1,1)) || mv1_h(j)~=mv1_h(C(1,2)) || mv1_v(j)~=mv1_v(C(1,2))
+                    %If they're not the same, you can update the second
+                    %best candidate
+                    D_min2=D;
+                    C(2,1)=i; %Second best candidates
+                    C(2,2)=j;
+                    C(2,3)=k;
+                end
             end
         end
     end
