@@ -34,7 +34,6 @@ for curFile=1:lastFileNum
             for j=1:length(mv1_h)
                 %Calcolo qui MVS2' perché nel prossimo step, con gli MVS2
                 %calcoleremo solo le distortion
-
                 mv2p_h= fix(-y*(mv1_v(j)-mv0_v(i))/w) + mv0_h(i);
                 mv2p_v= fix(+y*(mv1_h(j)-mv0_h(i))/w) + mv0_v(i);
                 for k=1:length(mv2_h)
