@@ -28,8 +28,8 @@ mv0_v(3)=-192;    %B3 y component
 mv1_h(1)=-48;   %B1 x component
 mv1_v(1)=-100;   %B1 y component
 
-%mv1_h(2)=-28;   %B0 x component
-%mv1_v(2)=-125;    %B0 y component
+mv1_h(2)=-28;   %B0 x component
+mv1_v(2)=-125;    %B0 y component
 
 %Group 2
 mv2_h(1)=208;   %A1 x component

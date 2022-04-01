@@ -1,5 +1,5 @@
 %% candidate_search_comp_algorithm
-% This script runs all of the previous scripts and compare the result with
+% This script runs all of the previous scripts the ones with infinite precision) and compare the result with
 % the approximated ones
 
 clear all
