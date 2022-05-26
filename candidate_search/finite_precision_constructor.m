@@ -1,7 +1,7 @@
 %% Finite precision constructor
 % This script computes the constructed candidates (with finite precision) for each of the examples
 % that are present in file "construction_exapmles-inventory.xlsx" and
-% writes down the results in a file
+% writes down the results in file "construction_examples-hardware.xlsx"
 
 clear all
 
@@ -9,7 +9,7 @@ data_r=readtable("construction_examples-inventory.xlsx")
 
 for curEx=1:numel(data_r.ExampleNum)
 
-    y=data_r.y(curEx);
+    h=data_r.h(curEx);
     w=data_r.w(curEx);
 
     % Neighboring blocks motion vector
@@ -44,8 +44,8 @@ for curEx=1:numel(data_r.ExampleNum)
         for j=1:length(mv1_h)
             %Calcolo qui MVS2' perché nel prossimo step, con gli MVS2
             %calcoleremo solo le distortion
-            mv2p_h(i,j)= fix(-y*(mv1_v(j)-mv0_v(i))/w) + mv0_h(i);
-            mv2p_v(i,j)= fix(+y*(mv1_h(j)-mv0_h(i))/w) + mv0_v(i);
+            mv2p_h(i,j)= bitshift(-(mv1_v(j)-mv0_v(i)),log2(h/w),'int16') + mv0_h(i);
+            mv2p_v(i,j)= bitshift(+(mv1_h(j)-mv0_h(i)),log2(h/w),'int16') + mv0_v(i);
             for k=1:length(mv2_h)
                 if (mv0_h(i)~=-1024 && mv1_h(j)~=-1024 && mv2_h(k)~=-1024)
                     D(i,j,k)=(mv2p_v(i,j)-mv2_v(k))^2+(mv2p_h(i,j)-mv2_h(k))^2;
@@ -65,7 +65,7 @@ for curEx=1:numel(data_r.ExampleNum)
     end
 
     data_w_struct(curEx).ExampleNum=data_r.ExampleNum(curEx);
-    data_w_struct(curEx).y=y;
+    data_w_struct(curEx).h=h;
     data_w_struct(curEx).w=w;
     data_w_struct(curEx).mv0_h=mv0_h;
     data_w_struct(curEx).mv0_v=mv0_v;
