@@ -30,7 +30,7 @@ for curFile=1:lastFileNum
         datastruct(datastructCurIdx).mv1_v=mv1_v;
         datastruct(datastructCurIdx).mv2_h=mv2_h;
         datastruct(datastructCurIdx).mv2_v=mv2_v;
-        datastruct(datastructCurIdx).y=y;
+        datastruct(datastructCurIdx).h=y;
         datastruct(datastructCurIdx).w=w;
         %Estratte le informazioni, aumenta gli indici e passa al prossimo
         %file
