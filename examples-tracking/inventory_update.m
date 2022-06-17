@@ -24,6 +24,8 @@ while ThereAreFiles
         datastruct(datastructCurIdx).Par=4+2*curfileTab.sixPar(1);
         datastruct(datastructCurIdx).w=curfileTab.w(1);
         datastruct(datastructCurIdx).h=curfileTab.h(1);
+        datastruct(datastructCurIdx).frame_w=curfileTab.frame_w(1);
+        datastruct(datastructCurIdx).frame_h=curfileTab.frame_h(1);
         %Estratte le informazioni, aumenta gli indici e passa al prossimo
         %file
         datastructCurIdx=datastructCurIdx+1;
