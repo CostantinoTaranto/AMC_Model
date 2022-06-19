@@ -126,7 +126,9 @@ mvr=zeros(cand_num,rep_num,block_num,2);
 %Exact values
 mvr_ex=mvr;
 
-fxp_prec=3;
+fxp_prec=4;%Alla fine 4 è la precisione totale, non ho approssimato
+%con 3 anche se avrei potuto per motivi spiegati nel datapath
+
 
 for curcand=1:cand_num
     curbloc=0; %Current block index
@@ -146,14 +148,14 @@ for curcand=1:cand_num
                 end
                 x=16*(i-1)+offset_x;
                 y=16*(j-1)+offset_y;
-                a_1=fxp((mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %a_v_hw
-                a_2=fxp((mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %a_h_hw
+                a_1=bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %a_v_hw
+                a_2=bitshift((mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %a_h_hw
                 if sixPar==0
-                    b_1=fxp(+(mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %b_v_hw
-                    b_2=fxp(-(mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %b_h_hw
+                    b_1=bitshift(+(mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %b_v_hw
+                    b_2=-bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %b_h_hw
                 else
-                    b_1=fxp(+(mv2_v(curcand)-mv0_v(curcand))/h,fxp_prec); %b_v_hw
-                    b_2=fxp(+(mv2_h(curcand)-mv0_h(curcand))/h,fxp_prec); %b_h_hw
+                    b_1=bitshift(+(mv2_v(curcand)-mv0_v(curcand)),-(log2(h)-4),'int16')/16; %b_v_hw
+                    b_2=bitshift(+(mv2_h(curcand)-mv0_h(curcand)),-(log2(h)-4),'int16')/16; %b_h_hw
                 end
                 mvr_ex(curcand,currep,curbloc,1)=x*a_1 + y*b_1 + mv0_v(curcand); %mv_v exact_hw
                 mvr_ex(curcand,currep,curbloc,2)=x*a_2 + y*b_2 + mv0_h(curcand); %mv_h exact_hw

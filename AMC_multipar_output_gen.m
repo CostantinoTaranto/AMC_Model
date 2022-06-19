@@ -10,7 +10,7 @@ addpath '.\YUV'
 addpath '.\myMatlabLib'
 
 firstFile=3;
-lastFile=29;
+lastFile=32;
 
 for curFile=firstFile:lastFile 
     
@@ -98,7 +98,8 @@ for curFile=firstFile:lastFile
     mvr_ex=mvr;
     mvr_ex_hw=mvr;
 
-    fxp_prec=3;
+    fxp_prec=4;%Alla fine 4 è la precisione totale, non ho approssimato
+    %con 3 anche se avrei potuto per motivi spiegati nel datapath
     
     for curcand=1:cand_num
         curbloc=0; %Current block index
@@ -120,18 +121,18 @@ for curFile=firstFile:lastFile
                     y=16*(j-1)+offset_y;
                     a_1=(mv1_v(curcand)-mv0_v(curcand))/w; %a_v
                     a_2=(mv1_h(curcand)-mv0_h(curcand))/w; %a_h
-                    a_1_hw=fxp((mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %a_v_hw
-                    a_2_hw=fxp((mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %a_h_hw
+                    a_1_hw=bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %a_v_hw
+                    a_2_hw=bitshift((mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %a_h_hw
                     if sixPar==0
                         b_1=+(mv1_h(curcand)-mv0_h(curcand))/w; %b_v
                         b_2=-(mv1_v(curcand)-mv0_v(curcand))/w; %b_h
-                        b_1_hw=fxp(+(mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %b_v_hw
-                        b_2_hw=fxp(-(mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %b_h_hw
+                        b_1_hw=bitshift(+(mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %b_v_hw
+                        b_2_hw=-bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %b_h_hw
                     else
                         b_1=+(mv2_v(curcand)-mv0_v(curcand))/h; %b_v
                         b_2=+(mv2_h(curcand)-mv0_h(curcand))/h; %b_h
-                        b_1_hw=fxp(+(mv2_v(curcand)-mv0_v(curcand))/h,fxp_prec); %b_v_hw
-                        b_2_hw=fxp(+(mv2_h(curcand)-mv0_h(curcand))/h,fxp_prec); %b_h_hw
+                        b_1_hw=bitshift(+(mv2_v(curcand)-mv0_v(curcand)),-(log2(h)-4),'int16')/16; %b_v_hw
+                        b_2_hw=bitshift(+(mv2_h(curcand)-mv0_h(curcand)),-(log2(h)-4),'int16')/16; %b_h_hw
                     end
                     mvr_ex(curcand,currep,curbloc,1)=x*a_1 + y*b_1 + mv0_v(curcand); %mv_v exact
                     mvr_ex(curcand,currep,curbloc,2)=x*a_2 + y*b_2 + mv0_h(curcand); %mv_h exact
@@ -153,18 +154,18 @@ for curFile=firstFile:lastFile
     SAD_max=max(SAD(1:2));
     SAD_adv=(1-SAD_min/SAD_max)*100;
 
-    fid=fopen(strcat("C:\Users\costa\Desktop\5.2\Tesi\git\AME_Architecture\tb\extimator_out\extimator_out_ex",num2str(curFile),".txt"),'W');
-    fprintf(fid,"%d %d\n",SAD(1), SAD(2));
-	fprintf(fid,"%d %d\n%d %d\n", mv0_h(Best_candidate),mv0_v(Best_candidate),mv1_h(Best_candidate),mv1_v(Best_candidate));
-    if sixPar==1
-           fprintf(fid,"%d %d", mv2_h(Best_candidate),mv2_v(Best_candidate));
-    end
-	fclose(fid);
-
     %Results computation (hardware)
     [SAD_min_hw,Best_candidate_hw]=min(SAD_hw(1:2));
     SAD_max_hw=max(SAD_hw(1:2));
     SAD_adv_hw=(1-SAD_min_hw/SAD_max_hw)*100;
+
+    fid=fopen(strcat("C:\Users\costa\Desktop\5.2\Tesi\git\AME_Architecture\tb\extimator_out\extimator_out_ex",num2str(curFile),".txt"),'W');
+    fprintf(fid,"%d %d\n",SAD_hw(1), SAD_hw(2));
+	fprintf(fid,"%d %d\n%d %d\n", mv0_h(Best_candidate_hw),mv0_v(Best_candidate_hw),mv1_h(Best_candidate_hw),mv1_v(Best_candidate_hw));
+    if sixPar==1
+           fprintf(fid,"%d %d", mv2_h(Best_candidate_hw),mv2_v(Best_candidate_hw));
+    end
+	fclose(fid);
 
     if Best_candidate==Best_candidate_hw
         fprintf("Motion Estimation match in example %d.\tBest_candidate=%d\tBest_candidate_hw=%d.\n",curFile,Best_candidate,Best_candidate_hw);

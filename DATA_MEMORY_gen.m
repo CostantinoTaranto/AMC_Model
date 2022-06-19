@@ -2,7 +2,7 @@
 %about each test sequence and creats the memory file for each test sequence
 
 firstfileNum=3;
-lastfileNum=29;
+lastfileNum=32; %RICORDARSI DI AGGIORNARE IL LAST FILE NUM
 
 examplesTab=readtable("./examples-tracking/matlab_examples-inventory.xlsx");
 
@@ -13,7 +13,7 @@ bottom_string=fscanf(fid_bottom,"%c");
 
 for curfileNum=firstfileNum:lastfileNum
 
-    curExample_idx=curfileNum-fistfileNum+1;
+    curExample_idx=curfileNum-firstfileNum+1;
     fid_mem=fopen(strcat("../AME_Architecture/tb/memory/DATA_MEMORY_ex",num2str(curfileNum),".vhd"),'W');    
     fprintf(fid_mem,"%c",top_string);
     fprintf(fid_mem,"\tconstant frame_w : integer := %d;\n",examplesTab.frame_w(curExample_idx));

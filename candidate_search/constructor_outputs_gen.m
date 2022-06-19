@@ -42,7 +42,7 @@ for curEx=1:numel(data_r.ExampleNum)
         for j=1:length(mv1_h)
             %Calcolo qui MVS2' perché nel prossimo step, con gli MVS2
             %calcoleremo solo le distortion
-            mv2p_h(i,j)= bitshift(-(mv1_v(j)-mv0_v(i)),log2(h/w),'int16') + mv0_h(i);
+            mv2p_h(i,j)= -bitshift((mv1_v(j)-mv0_v(i)),log2(h/w),'int16') + mv0_h(i);
             mv2p_v(i,j)= bitshift(+(mv1_h(j)-mv0_h(i)),log2(h/w),'int16') + mv0_v(i);
             for k=1:length(mv2_h)
                 if (mv0_h(i)~=-1024 && mv1_h(j)~=-1024 && mv2_h(k)~=-1024)
@@ -77,7 +77,7 @@ for curEx=1:numel(data_r.ExampleNum)
 	fprintf(fid,"\n");
 	fprintf(fid,"%d %d\n",mv0_h(C_hw(1,1)),mv0_v(C_hw(1,1)));
 	fprintf(fid,"%d %d\n",mv1_h(C_hw(1,2)),mv1_v(C_hw(1,2)));
-	fprintf(fid,"%d %d\n",mv2_h(C_hw(1,3)),mv0_v(C_hw(1,3)));
+	fprintf(fid,"%d %d\n",mv2_h(C_hw(1,3)),mv2_v(C_hw(1,3)));
 	fclose(fid);
 
 end

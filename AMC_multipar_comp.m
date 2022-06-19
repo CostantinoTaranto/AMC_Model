@@ -1,6 +1,7 @@
 %% AMC for canditates choice comparison 
 %This scripts compares the infinite precision AME model with the finite
-%precision (hw) one
+%precision (hw) one. What appears is that only example 8 does not match
+%the infinite precision algorithm. We take this as sufficiently valid.
 
 close all
 clear
@@ -10,7 +11,7 @@ addpath '.\YUV'
 addpath '.\myMatlabLib'
 
 firstFile=3;
-lastFile=29;
+lastFile=32;
 
 for curFile=firstFile:lastFile 
     
@@ -96,7 +97,7 @@ for curFile=firstFile:lastFile
     mvr_ex=mvr;
     mvr_ex_hw=mvr;
 
-    fxp_prec=3;
+    fxp_prec=4;
     
     for curcand=1:cand_num
         curbloc=0; %Current block index
@@ -118,18 +119,18 @@ for curFile=firstFile:lastFile
                     y=16*(j-1)+offset_y;
                     a_1=(mv1_v(curcand)-mv0_v(curcand))/w; %a_v
                     a_2=(mv1_h(curcand)-mv0_h(curcand))/w; %a_h
-                    a_1_hw=fxp((mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %a_v_hw
-                    a_2_hw=fxp((mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %a_h_hw
+                    a_1_hw=bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %a_v_hw
+                    a_2_hw=bitshift((mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %a_h_hw
                     if sixPar==0
                         b_1=+(mv1_h(curcand)-mv0_h(curcand))/w; %b_v
                         b_2=-(mv1_v(curcand)-mv0_v(curcand))/w; %b_h
-                        b_1_hw=fxp(+(mv1_h(curcand)-mv0_h(curcand))/w,fxp_prec); %b_v_hw
-                        b_2_hw=fxp(-(mv1_v(curcand)-mv0_v(curcand))/w,fxp_prec); %b_h_hw
+                        b_1_hw=bitshift(+(mv1_h(curcand)-mv0_h(curcand)),-(log2(w)-4),'int16')/16; %b_v_hw
+                        b_2_hw=-bitshift((mv1_v(curcand)-mv0_v(curcand)),-(log2(w)-4),'int16')/16; %b_h_hw
                     else
                         b_1=+(mv2_v(curcand)-mv0_v(curcand))/h; %b_v
                         b_2=+(mv2_h(curcand)-mv0_h(curcand))/h; %b_h
-                        b_1_hw=fxp(+(mv2_v(curcand)-mv0_v(curcand))/h,fxp_prec); %b_v_hw
-                        b_2_hw=fxp(+(mv2_h(curcand)-mv0_h(curcand))/h,fxp_prec); %b_h_hw
+                        b_1_hw=bitshift(+(mv2_v(curcand)-mv0_v(curcand)),-(log2(h)-4),'int16')/16; %b_v_hw
+                        b_2_hw=bitshift(+(mv2_h(curcand)-mv0_h(curcand)),-(log2(h)-4),'int16')/16; %b_h_hw
                     end
                     mvr_ex(curcand,currep,curbloc,1)=x*a_1 + y*b_1 + mv0_v(curcand); %mv_v exact
                     mvr_ex(curcand,currep,curbloc,2)=x*a_2 + y*b_2 + mv0_h(curcand); %mv_h exact
